@@ -12,14 +12,17 @@ use App\Filament\Pages\Dashboard;
 use App\Filament\Pages\Auth\Login;
 use Filament\Support\Colors\Color;
 use App\Filament\Pages\Auth\EditProfile;
+use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use TomatoPHP\FilamentNotes\FilamentNotesPlugin;
 use Filament\Http\Middleware\AuthenticateSession;
 use Awcodes\FilamentQuickCreate\QuickCreatePlugin;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
+use TomatoPHP\FilamentNotes\Filament\Widgets\NotesWidget;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -46,6 +49,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
+                NotesWidget::class
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -65,12 +69,20 @@ class AdminPanelProvider extends PanelProvider
             ->defaultThemeMode(ThemeMode::Light)
             ->profile(EditProfile::class)
             ->spa()
-            ->topNavigation(true)
+            // ->topNavigation(true)
             ->breadcrumbs(false)
             ->sidebarCollapsibleOnDesktop()
             ->defaultThemeMode(ThemeMode::Light)
             ->unsavedChangesAlerts()
             // ->databaseNotifications()
+            ->navigationGroups([
+                NavigationGroup::make()
+                    ->label(__('models.navigation_group.master_data')),
+                NavigationGroup::make()
+                    ->label(__('models.navigation_group.content')),
+                NavigationGroup::make()
+                    ->label(__('models.navigation_group.setting')),
+            ])
             ->plugins([
                 FilamentSpatieLaravelBackupPlugin::make()
                     ->usingPage(Backups::class),
@@ -79,6 +91,10 @@ class AdminPanelProvider extends PanelProvider
                         \App\Filament\Resources\UserResource::class,
                     ])
                     ->createAnother(false),
+                FilamentNotesPlugin::make()
+                    ->useUserAccess()
+                    ->useChecklist()
+                    ->navigationIcon('heroicon-m-bookmark')
             ]);
     }
 }

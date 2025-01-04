@@ -111,4 +111,9 @@ return [
         'set' => 'Tandai sebagai',
         'free_warning' => 'Pengguna gratis hanya dapat membuat %d %s. Anda telah membuat %d %s.',
     ],
+    'navigation_group' => [
+        'master_data' => 'Master Data',
+        'content' => 'Konten',
+        'setting' => 'Pengaturan',
+    ],
 ];

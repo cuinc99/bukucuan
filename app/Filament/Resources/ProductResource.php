@@ -23,6 +23,10 @@ class ProductResource extends Resource
 
     protected static ?string $recordTitleAttribute = 'name';
 
+    protected static ?int $navigationSort = 2;
+
+    protected static ?string $navigationGroup = 'Master Data';
+
     public static function form(Form $form): Form
     {
         return $form

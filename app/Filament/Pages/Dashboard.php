@@ -12,10 +12,7 @@ class Dashboard extends BaseDashboard
 {
     use BaseDashboard\Concerns\HasFiltersForm;
 
-    // public function getColumns(): int | string | array
-    // {
-    //     return 3;
-    // }
+    protected static ?string $navigationIcon = 'heroicon-m-home';
 
     public function filtersForm(Form $form): Form
     {
