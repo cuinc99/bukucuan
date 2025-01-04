@@ -49,7 +49,7 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 // Widgets\AccountWidget::class,
                 // Widgets\FilamentInfoWidget::class,
-                NotesWidget::class
+                // NotesWidget::class
             ])
             ->middleware([
                 EncryptCookies::class,
