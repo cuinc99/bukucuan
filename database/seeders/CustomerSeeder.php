@@ -18,28 +18,27 @@ class CustomerSeeder extends Seeder
             [
                 'name' => 'Budi Santoso',
                 'type' => CustomerTypeEnum::RESELLER->value,
+                'type_id' => 1, // Regular Customer
                 'user_id' => 2
             ],
             [
                 'name' => 'Siti Rahma',
                 'type' => CustomerTypeEnum::RESELLER->value,
+                'type_id' => 2, // VIP Customer
                 'user_id' => 2
             ],
             [
                 'name' => 'Ahmad Wijaya',
                 'type' => CustomerTypeEnum::PEMBELI->value,
+                'type_id' => 1, // Regular Customer
                 'user_id' => 2
             ],
             [
                 'name' => 'Dewi Kartika',
                 'type' => CustomerTypeEnum::RESELLER->value,
+                'type_id' => 2, // VIP Customer
                 'user_id' => 2
             ],
-            [
-                'name' => 'Rudi Hartono',
-                'type' => CustomerTypeEnum::PEMBELI->value,
-                'user_id' => 2
-            ]
         ];
 
         foreach ($customers as $customer) {

@@ -2,24 +2,24 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
-use Filament\Tables;
-use Filament\Infolists;
-use App\Models\Customer;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
 use App\Enums\CustomerTypeEnum;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Filament\Resources\Pages\Page;
-use Filament\Support\Colors\Color;
-use Illuminate\Support\Facades\DB;
-use Filament\Support\Enums\ActionSize;
-use Filament\Support\Enums\FontWeight;
-use Filament\Pages\SubNavigationPosition;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers\TransactionsRelationManager;
+use App\Models\Customer;
+use Filament\Forms;
+use Filament\Forms\Form;
+use Filament\Infolists;
+use Filament\Infolists\Infolist;
+use Filament\Pages\SubNavigationPosition;
+use Filament\Resources\Pages\Page;
+use Filament\Resources\Resource;
+use Filament\Support\Colors\Color;
+use Filament\Support\Enums\ActionSize;
+use Filament\Support\Enums\FontWeight;
+use Filament\Tables;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class CustomerResource extends Resource
 {
@@ -48,6 +48,17 @@ class CustomerResource extends Resource
                             ->required()
                             ->inline()
                             ->options(CustomerTypeEnum::class),
+                        Forms\Components\Select::make('type_id')
+                            ->relationship('type', 'name')
+                            ->required()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Hidden::make('key')
+                                    ->default('customer'),
+                            ]),
                         Forms\Components\Hidden::make('user_id')
                             ->default(auth()->user()->id),
                     ]),
@@ -64,6 +75,9 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('type')
                     ->label(__('models.customers.fields.type'))
                     ->badge(),
+                Tables\Columns\TextColumn::make('type_id')
+                    ->label(__('models.customers.fields.type'))
+                    ->badge(),
                 Tables\Columns\TextColumn::make('total_transaction')
                     ->label(__('models.customers.fields.total_transaction'))
                     ->numeric()
@@ -76,7 +90,7 @@ class CustomerResource extends Resource
                     ->alignCenter(),
                 Tables\Columns\TextColumn::make('total_buy')
                     ->label(__('models.customers.fields.total_buy'))
-                    ->formatStateUsing(fn (string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
+                    ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
                     ->weight(FontWeight::SemiBold)
                     ->sortable(query: function (Builder $query, string $direction): Builder {
                         return $query->select(
@@ -149,7 +163,7 @@ class CustomerResource extends Resource
                             ->suffix(' item'),
                         Infolists\Components\TextEntry::make('total_buy')
                             ->label(__('models.customers.fields.total_buy'))
-                            ->formatStateUsing(fn (string $state): string => __("Rp. " . number_format($state, 0, ',', '.'))),
+                            ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.'))),
                     ]),
 
             ]);
@@ -180,6 +194,6 @@ class CustomerResource extends Resource
 
     public static function canCreate(): bool
     {
-        return ! static::getModel()::isOutOfQuota();
+        return !static::getModel()::isOutOfQuota();
     }
 }

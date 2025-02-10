@@ -51,7 +51,7 @@ class ExpenseResource extends Resource
                             ->modalDescription('__(models.common.reset_action_description).')
                             ->requiresConfirmation()
                             ->color('danger')
-                            ->action(fn (Forms\Set $set) => $set('items', [])),
+                            ->action(fn(Forms\Set $set) => $set('items', [])),
                     ])
                     ->schema([
                         static::getItemsRepeater(),
@@ -71,6 +71,9 @@ class ExpenseResource extends Resource
                 Header::make('type')
                     ->label(__('models.expenses.fields.type'))
                     ->markAsRequired(),
+                Header::make('type')
+                    ->label(__('models.expenses.fields.type'))
+                    ->markAsRequired(),
                 Header::make('price')
                     ->label(__('models.expenses.fields.price')),
             ])
@@ -84,6 +87,18 @@ class ExpenseResource extends Resource
                     ->options(\App\Enums\ExpenseTypeEnum::class)
                     ->inline()
                     ->required(),
+
+                Forms\Components\Select::make('type_id')
+                    ->relationship('type', 'name')
+                    ->required()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Hidden::make('key')
+                            ->default('expense'),
+                    ]),
 
                 Forms\Components\TextInput::make('price')
                     ->label(__('models.expenses.fields.price'))
@@ -115,11 +130,11 @@ class ExpenseResource extends Resource
                     ->label(__('models.expenses.fields.price'))
                     ->searchable()
                     ->sortable()
-                    ->formatStateUsing(fn (string $state): string => __('Rp. '.number_format($state, 0, ',', '.')))
+                    ->formatStateUsing(fn(string $state): string => __('Rp. ' . number_format($state, 0, ',', '.')))
                     ->summarize([
                         Tables\Columns\Summarizers\Sum::make()
-                            ->formatStateUsing(fn (string $state): string => __('Rp. '.number_format($state, 0, ',', '.')))
-                            ->label('Total '.__('models.expenses.fields.price')),
+                            ->formatStateUsing(fn(string $state): string => __('Rp. ' . number_format($state, 0, ',', '.')))
+                            ->label('Total ' . __('models.expenses.fields.price')),
                     ]),
             ])
             ->filters([
@@ -140,20 +155,20 @@ class ExpenseResource extends Resource
                         return $query
                             ->when(
                                 $data['created_from'] ?? null,
-                                fn (Builder $query, $date): Builder => $query->whereDate('purchase_date', '>=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('purchase_date', '>=', $date),
                             )
                             ->when(
                                 $data['created_until'] ?? null,
-                                fn (Builder $query, $date): Builder => $query->whereDate('purchase_date', '<=', $date),
+                                fn(Builder $query, $date): Builder => $query->whereDate('purchase_date', '<=', $date),
                             );
                     })
                     ->indicateUsing(function (array $data): array {
                         $indicators = [];
                         if ($data['created_from'] ?? null) {
-                            $indicators['created_from'] = __('models.common.created_from').' '.Carbon::parse($data['created_from'])->toFormattedDateString();
+                            $indicators['created_from'] = __('models.common.created_from') . ' ' . Carbon::parse($data['created_from'])->toFormattedDateString();
                         }
                         if ($data['created_until'] ?? null) {
-                            $indicators['created_until'] = __('models.common.created_until').' '.Carbon::parse($data['created_until'])->toFormattedDateString();
+                            $indicators['created_until'] = __('models.common.created_until') . ' ' . Carbon::parse($data['created_until'])->toFormattedDateString();
                         }
 
                         return $indicators;
@@ -162,7 +177,7 @@ class ExpenseResource extends Resource
             ->deferFilters()
             ->persistFiltersInSession()
             ->filtersTriggerAction(
-                fn (Tables\Actions\Action $action) => $action
+                fn(Tables\Actions\Action $action) => $action
                     ->button()
                     ->label('Filter'),
             )

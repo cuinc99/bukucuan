@@ -37,6 +37,17 @@ class ProductResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
+                        Forms\Components\Select::make('type_id')
+                            ->relationship('type', 'name')
+                            ->required()
+                            ->preload()
+                            ->createOptionForm([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Hidden::make('key')
+                                    ->default('product'),
+                            ]),
                         Forms\Components\TextInput::make('purchase_price')
                             ->label(__('models.products.fields.purchase_price'))
                             ->required()
@@ -63,11 +74,11 @@ class ProductResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('purchase_price')
                     ->label(__('models.products.fields.purchase_price'))
-                    ->formatStateUsing(fn (string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
+                    ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('selling_price')
                     ->label(__('models.products.fields.selling_price'))
-                    ->formatStateUsing(fn (string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
+                    ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sold')
                     ->label(__('models.products.fields.sold'))
@@ -112,10 +123,10 @@ class ProductResource extends Resource
                             ->label(__('models.products.fields.name')),
                         Infolists\Components\TextEntry::make('purchase_price')
                             ->label(__('models.products.fields.purchase_price'))
-                            ->formatStateUsing(fn (string $state): string => __("Rp. " . number_format($state, 0, ',', '.'))),
+                            ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.'))),
                         Infolists\Components\TextEntry::make('selling_price')
                             ->label(__('models.products.fields.selling_price'))
-                            ->formatStateUsing(fn (string $state): string => __("Rp. " . number_format($state, 0, ',', '.'))),
+                            ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.'))),
                         Infolists\Components\TextEntry::make('sold')
                             ->label(__('models.products.fields.sold'))
                             ->suffix(' item'),
@@ -143,6 +154,6 @@ class ProductResource extends Resource
 
     public static function canCreate(): bool
     {
-        return ! static::getModel()::isOutOfQuota();
+        return !static::getModel()::isOutOfQuota();
     }
 }

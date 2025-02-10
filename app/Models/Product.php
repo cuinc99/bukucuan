@@ -39,4 +39,9 @@ class Product extends Model
             ->whereNotNull('customer_id')
             ->when($created_from != NULL && $created_until != NULL, fn ($q) => $q->whereBetween('purchase_date', [$created_from, $created_until]));
     }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class);
+    }
 }

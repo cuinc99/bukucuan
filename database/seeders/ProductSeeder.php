@@ -19,6 +19,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Laptop gaming berkinerja tinggi dengan prosesor terkini',
                 'purchase_price' => 12000000,
                 'selling_price' => 15000000,
+                'type_id' => 3, // Electronics
                 'user_id' => 2
             ],
             [
@@ -26,6 +27,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Ponsel pintar dengan kamera resolusi tinggi',
                 'purchase_price' => 5000000,
                 'selling_price' => 6500000,
+                'type_id' => 3, // Electronics
                 'user_id' => 2
             ],
             [
@@ -33,6 +35,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Printer inkjet multifungsi untuk kebutuhan kantor',
                 'purchase_price' => 2500000,
                 'selling_price' => 3000000,
+                'type_id' => 3, // Electronics
                 'user_id' => 2
             ],
             [
@@ -40,6 +43,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Monitor lebar dengan kualitas tampilan premium',
                 'purchase_price' => 4000000,
                 'selling_price' => 5000000,
+                'type_id' => 3, // Electronics
                 'user_id' => 2
             ],
             [
@@ -47,6 +51,7 @@ class ProductSeeder extends Seeder
                 'description' => 'Keyboard gaming dengan switch berkualitas tinggi',
                 'purchase_price' => 1500000,
                 'selling_price' => 2000000,
+                'type_id' => 4, // Accessories
                 'user_id' => 2
             ]
         ];

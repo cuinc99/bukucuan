@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\ExpenseTypeEnum;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Expense extends Model
 {
@@ -14,5 +15,10 @@ class Expense extends Model
             'purchase_date' => 'date',
             'type' => ExpenseTypeEnum::class,
         ];
+    }
+
+    public function type(): BelongsTo
+    {
+        return $this->belongsTo(Type::class);
     }
 }
