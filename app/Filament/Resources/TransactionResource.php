@@ -32,7 +32,9 @@ class TransactionResource extends Resource
 {
     protected static ?string $model = Transaction::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-shopping-cart';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+
+    protected static ?int $navigationSort = 3;
 
     public static function form(Form $form): Form
     {

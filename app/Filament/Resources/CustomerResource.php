@@ -25,13 +25,11 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-users';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?int $navigationSort = 1;
-
-    protected static ?string $navigationGroup = 'Master Data';
 
     protected static SubNavigationPosition $subNavigationPosition = SubNavigationPosition::Top;
 
