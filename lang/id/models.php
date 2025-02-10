@@ -64,6 +64,17 @@ return [
             ]
         ],
     ],
+    'expenses' => [
+        'title' => 'Pengeluaran',
+        'fields' => [
+            'expense_code' => 'Kode Pengeluaran',
+            'purchase_date' => 'Tanggal Pengeluaran',
+            'product' => 'Produk',
+            'type' => 'Tipe',
+            'price' => 'Harga',
+            'subtotal' => 'Subtotal',
+        ],
+    ],
     'widgets' => [
         'transactions_per_month_chart' => [
             'heading' => 'Grafik Transaksi per Bulan',
