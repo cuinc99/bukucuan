@@ -3,33 +3,12 @@
 namespace App\Models;
 
 use App\Models\Transaction;
-use App\Enums\CustomerTypeEnum;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Customer extends Model
 {
     protected $guarded = ['id'];
-
-    const FREE_LIMIT = 10;
-
-    protected function casts(): array
-    {
-        return [
-            'type' => CustomerTypeEnum::class
-        ];
-    }
-
-    public static function isOutOfQuota(): bool
-    {
-        $user = auth()->user();
-
-        if ($user && $user->role->isFree()) {
-            return self::where('user_id', $user->id)->count() >= self::FREE_LIMIT;
-        }
-
-        return false;
-    }
 
     public function getTotalTransactionAttribute()
     {

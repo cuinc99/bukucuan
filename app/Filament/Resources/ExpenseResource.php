@@ -2,27 +2,29 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ExpenseResource\Pages;
-use App\Models\Expense;
-use Awcodes\TableRepeater\Components\TableRepeater;
-use Awcodes\TableRepeater\Header;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
+use App\Models\Type;
+use Filament\Tables;
+use App\Models\Expense;
 use Filament\Forms\Form;
+use App\Enums\TypeKeyEnum;
+use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Awcodes\TableRepeater\Header;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\ActionSize;
-use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Actions\Action;
+use App\Filament\Resources\ExpenseResource\Pages;
+use Awcodes\TableRepeater\Components\TableRepeater;
 
 class ExpenseResource extends Resource
 {
     protected static ?string $model = Expense::class;
 
-    protected static ?string $navigationIcon = 'heroicon-m-shopping-bag';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-bag';
 
     protected static ?int $navigationSort = 4;
 
@@ -82,23 +84,22 @@ class ExpenseResource extends Resource
                     ->label(__('models.expenses.fields.product'))
                     ->required(),
 
-                Forms\Components\ToggleButtons::make('type')
-                    ->label(__('models.expenses.fields.type'))
-                    ->options(\App\Enums\ExpenseTypeEnum::class)
-                    ->inline()
-                    ->required(),
-
                 Forms\Components\Select::make('type_id')
-                    ->relationship('type', 'name')
+                    ->label(__('models.expenses.fields.type'))
+                    ->options(Type::where('key', TypeKeyEnum::EXPENSE->value)->pluck('name', 'id'))
                     ->required()
+                    ->searchable()
                     ->preload()
                     ->createOptionForm([
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Hidden::make('key')
-                            ->default('expense'),
-                    ]),
+                            ->default(TypeKeyEnum::EXPENSE->value),
+                    ])
+                    ->createOptionUsing(function (array $data): int {
+                        return auth()->user()->types()->create($data)->getKey();
+                    }),
 
                 Forms\Components\TextInput::make('price')
                     ->label(__('models.expenses.fields.price'))

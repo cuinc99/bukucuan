@@ -2,9 +2,10 @@
 
 namespace App\Filament\Resources\CustomerResource\Pages;
 
+use App\Models\Type;
 use Filament\Actions;
 use App\Models\Customer;
-use App\Enums\CustomerTypeEnum;
+use App\Enums\TypeKeyEnum;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,27 +30,14 @@ class ListCustomers extends ListRecords
         $tabs['all'] = Tab::make(trans('models.common.all'))
             ->badge(Customer::count());
 
-        foreach (CustomerTypeEnum::cases() as $type) {
-            $tabs[$type->value] = Tab::make($type->value)
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('type', $type->value))
-                ->badge(Customer::where('type', $type->value)->count())
-                ->badgeColor($type->getColor())
-                ->badgeIcon($type->getIcon());
+        foreach (Type::where('key', TypeKeyEnum::CUSTOMER->value)->get() as $type) {
+            $tabs[$type->value] = Tab::make($type->name)
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('type_id', $type->id));
+                // ->badge(Customer::where('type', $type->id)->count())
+                // ->badgeColor($type->getColor())
+                // ->badgeIcon($type->getIcon());
         }
 
         return $tabs;
-    }
-
-    public function getSubheading(): ?string
-    {
-        return auth()->user()->role->isFree()
-            ? sprintf(
-                __('models.common.free_warning'),
-                Customer::FREE_LIMIT,
-                __('models.customers.title'),
-                Customer::where('user_id', auth()->id())->count(),
-                __('models.customers.title'),
-            )
-            : "";
     }
 }

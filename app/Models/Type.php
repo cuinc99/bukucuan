@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use App\Enums\TypeKeyEnum;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Type extends Model

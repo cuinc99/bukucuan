@@ -43,17 +43,4 @@ class ListTransactions extends ListRecords
             __('models.transactions.fields.is_paid_options.unpaid') => Tab::make()->query(fn ($query) => $query->where('is_paid', false)),
         ];
     }
-
-    public function getSubheading(): ?string
-    {
-        return auth()->user()->role->isFree()
-            ? sprintf(
-                __('models.common.free_warning'),
-                Transaction::FREE_LIMIT,
-                __('models.transactions.title'),
-                Transaction::where('user_id', auth()->id())->count(),
-                __('models.transactions.title'),
-            )
-            : "";
-    }
 }

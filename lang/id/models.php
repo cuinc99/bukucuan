@@ -33,6 +33,7 @@ return [
             'purchase_price' => 'Harga Beli',
             'selling_price' => 'Harga Jual',
             'sold' => 'Terjual',
+            'category' => 'Kategori',
         ],
     ],
     'transactions' => [

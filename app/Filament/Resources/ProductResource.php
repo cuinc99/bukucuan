@@ -37,28 +37,38 @@ class ProductResource extends Resource
                             ->required()
                             ->maxLength(255)
                             ->columnSpanFull(),
+
                         Forms\Components\Select::make('type_id')
-                            ->relationship('type', 'name')
+                            ->label(__('models.products.fields.category'))
+                            ->options(Type::where('key', TypeKeyEnum::PRODUCT->value)->pluck('name', 'id'))
                             ->required()
+                            ->searchable()
                             ->preload()
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Hidden::make('key')
-                                    ->default('product'),
-                            ]),
+                                    ->default(TypeKeyEnum::PRODUCT->value),
+                            ])
+                            ->createOptionUsing(function (array $data): int {
+                                return auth()->user()->types()->create($data)->getKey();
+                            }),
+
                         Forms\Components\TextInput::make('purchase_price')
                             ->label(__('models.products.fields.purchase_price'))
                             ->required()
                             ->numeric(),
+
                         Forms\Components\TextInput::make('selling_price')
                             ->label(__('models.products.fields.selling_price'))
                             ->required()
                             ->numeric(),
+
                         Forms\Components\Textarea::make('description')
                             ->label(__('models.products.fields.description'))
                             ->columnSpanFull(),
+
                         Forms\Components\Hidden::make('user_id')
                             ->default(auth()->user()->id),
                     ]),

@@ -12,22 +12,27 @@ class TypeSeeder extends Seeder
     {
         $types = [
             [
-                'name' => 'Regular Customer',
+                'name' => 'Pembeli',
                 'key' => TypeKeyEnum::CUSTOMER->value,
                 'user_id' => 2,
             ],
             [
-                'name' => 'VIP Customer',
+                'name' => 'Reseller',
                 'key' => TypeKeyEnum::CUSTOMER->value,
                 'user_id' => 2,
             ],
             [
-                'name' => 'Electronics',
+                'name' => 'Makanan',
                 'key' => TypeKeyEnum::PRODUCT->value,
                 'user_id' => 2,
             ],
             [
-                'name' => 'Accessories',
+                'name' => 'Minuman',
+                'key' => TypeKeyEnum::PRODUCT->value,
+                'user_id' => 2,
+            ],
+            [
+                'name' => 'Lainnya',
                 'key' => TypeKeyEnum::PRODUCT->value,
                 'user_id' => 2,
             ],
@@ -38,6 +43,11 @@ class TypeSeeder extends Seeder
             ],
             [
                 'name' => 'Pengembangan',
+                'key' => TypeKeyEnum::EXPENSE->value,
+                'user_id' => 2,
+            ],
+            [
+                'name' => 'Lainnya',
                 'key' => TypeKeyEnum::EXPENSE->value,
                 'user_id' => 2,
             ],

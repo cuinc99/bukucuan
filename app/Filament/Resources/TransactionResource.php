@@ -2,31 +2,32 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\CustomerTypeEnum;
-use App\Filament\Resources\CustomerResource\RelationManagers\TransactionsRelationManager;
-use App\Filament\Resources\TransactionResource\Pages;
-use App\Filament\Resources\TransactionResource\Widgets\TransactionStats;
-use App\Models\Customer;
-use App\Models\Product;
-use App\Models\Transaction;
-use Awcodes\TableRepeater\Components\TableRepeater;
-use Awcodes\TableRepeater\Header;
 use Carbon\Carbon;
 use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Form;
+use App\Models\Type;
+use Filament\Tables;
+use App\Models\Product;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
+use App\Models\Customer;
+use Filament\Forms\Form;
+use App\Enums\TypeKeyEnum;
+use Filament\Tables\Table;
+use App\Models\Transaction;
 use Filament\Resources\Resource;
+use Awcodes\TableRepeater\Header;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\ActionSize;
-use Filament\Tables;
 use Filament\Tables\Enums\FiltersLayout;
-use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
 use pxlrbt\FilamentExcel\Columns\Column;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\Actions\Action;
 use pxlrbt\FilamentExcel\Exports\ExcelExport;
+use Awcodes\TableRepeater\Components\TableRepeater;
+use App\Filament\Resources\TransactionResource\Pages;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+use App\Filament\Resources\TransactionResource\Widgets\TransactionStats;
+use App\Filament\Resources\CustomerResource\RelationManagers\TransactionsRelationManager;
 
 class TransactionResource extends Resource
 {
@@ -61,11 +62,12 @@ class TransactionResource extends Resource
                                     ->label(__('models.customers.fields.name'))
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\ToggleButtons::make('type')
+                                Forms\Components\Select::make('type_id')
                                     ->label(__('models.customers.fields.type'))
+                                    ->options(Type::where('key', TypeKeyEnum::CUSTOMER->value)->pluck('name', 'id'))
                                     ->required()
-                                    ->inline()
-                                    ->options(CustomerTypeEnum::class),
+                                    ->searchable()
+                                    ->preload(),
                                 Forms\Components\Hidden::make('user_id')
                                     ->default(auth()->user()->id),
                             ])
@@ -476,12 +478,12 @@ class TransactionResource extends Resource
                     ->hiddenOn(TransactionsRelationManager::class),
                 Tables\Filters\SelectFilter::make('customer_type')
                     ->label(__('models.customers.fields.type') . ' ' . __('models.transactions.fields.customer'))
-                    ->options(CustomerTypeEnum::class)
+                    ->options(Type::where('key', TypeKeyEnum::CUSTOMER->value)->pluck('name', 'id'))
                     ->searchable()
                     ->modifyQueryUsing(function ($query, $data) {
                         if (!empty($data['value'])) {
                             $query->whereHas('customer', function ($query) use ($data) {
-                                $query->where('type', $data);
+                                $query->where('type_id', $data);
                             });
                         }
                     })

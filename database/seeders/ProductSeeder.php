@@ -15,45 +15,53 @@ class ProductSeeder extends Seeder
     {
         $products = [
             [
-                'name' => 'Laptop Asus ROG',
-                'description' => 'Laptop gaming berkinerja tinggi dengan prosesor terkini',
-                'purchase_price' => 12000000,
-                'selling_price' => 15000000,
-                'type_id' => 3, // Electronics
+                'name' => 'Nasi Goreng Special',
+                'description' => 'Nasi goreng dengan tambahan telur dan ayam',
+                'purchase_price' => 15000,
+                'selling_price' => 25000,
+                'type_id' => 3, // Makanan
                 'user_id' => 2
             ],
             [
-                'name' => 'Smartphone Samsung Galaxy',
-                'description' => 'Ponsel pintar dengan kamera resolusi tinggi',
-                'purchase_price' => 5000000,
-                'selling_price' => 6500000,
-                'type_id' => 3, // Electronics
+                'name' => 'Mie Goreng Spesial',
+                'description' => 'Mie goreng dengan tambahan bakso dan sayuran',
+                'purchase_price' => 12000,
+                'selling_price' => 20000,
+                'type_id' => 3, // Makanan
                 'user_id' => 2
             ],
             [
-                'name' => 'Printer Epson L3210',
-                'description' => 'Printer inkjet multifungsi untuk kebutuhan kantor',
-                'purchase_price' => 2500000,
-                'selling_price' => 3000000,
-                'type_id' => 3, // Electronics
+                'name' => 'Es Teh Manis',
+                'description' => 'Teh manis dingin segar',
+                'purchase_price' => 3000,
+                'selling_price' => 7000,
+                'type_id' => 4, // Minuman
                 'user_id' => 2
             ],
             [
-                'name' => 'Monitor LG UltraWide',
-                'description' => 'Monitor lebar dengan kualitas tampilan premium',
-                'purchase_price' => 4000000,
-                'selling_price' => 5000000,
-                'type_id' => 3, // Electronics
+                'name' => 'Es Jeruk',
+                'description' => 'Jeruk peras segar dengan es',
+                'purchase_price' => 4000,
+                'selling_price' => 8000,
+                'type_id' => 4, // Minuman
                 'user_id' => 2
             ],
             [
-                'name' => 'Keyboard Mechanical Logitech',
-                'description' => 'Keyboard gaming dengan switch berkualitas tinggi',
-                'purchase_price' => 1500000,
-                'selling_price' => 2000000,
-                'type_id' => 4, // Accessories
+                'name' => 'Tissue',
+                'description' => 'Tissue makan',
+                'purchase_price' => 10000,
+                'selling_price' => 15000,
+                'type_id' => 5, // Lainnya
                 'user_id' => 2
-            ]
+            ],
+            [
+                'name' => 'Kotak Makanan',
+                'description' => 'Kotak makanan untuk takeaway',
+                'purchase_price' => 2000,
+                'selling_price' => 3500,
+                'type_id' => 5, // Lainnya
+                'user_id' => 2
+            ],
         ];
 
         foreach ($products as $product) {

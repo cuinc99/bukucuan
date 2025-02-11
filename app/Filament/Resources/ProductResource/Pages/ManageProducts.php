@@ -18,17 +18,4 @@ class ManageProducts extends ManageRecords
                 ->disabled(fn (): bool => Product::isOutOfQuota()),
         ];
     }
-
-    public function getSubheading(): string
-    {
-        return auth()->user()->role->isFree()
-            ? sprintf(
-                __('models.common.free_warning'),
-                Product::FREE_LIMIT,
-                __('models.products.title'),
-                Product::where('user_id', auth()->id())->count(),
-                __('models.products.title'),
-            )
-            : "";
-    }
 }

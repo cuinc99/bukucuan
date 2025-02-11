@@ -1,11 +1,11 @@
 <?php
-
 namespace App\Filament\Resources;
 
-use App\Enums\CustomerTypeEnum;
+use App\Enums\TypeKeyEnum;
 use App\Filament\Resources\CustomerResource\Pages;
 use App\Filament\Resources\CustomerResource\RelationManagers\TransactionsRelationManager;
 use App\Models\Customer;
+use App\Models\Type;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -38,27 +38,20 @@ class CustomerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make()
+                    ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->label(__('models.customers.fields.name'))
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\ToggleButtons::make('type')
-                            ->label(__('models.customers.fields.type'))
-                            ->required()
-                            ->inline()
-                            ->options(CustomerTypeEnum::class),
+
                         Forms\Components\Select::make('type_id')
-                            ->relationship('type', 'name')
+                            ->label(__('models.customers.fields.type'))
+                            ->options(Type::where('key', TypeKeyEnum::CUSTOMER->value)->pluck('name', 'id'))
                             ->required()
-                            ->preload()
-                            ->createOptionForm([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\Hidden::make('key')
-                                    ->default('customer'),
-                            ]),
+                            ->searchable()
+                            ->preload(),
+
                         Forms\Components\Hidden::make('user_id')
                             ->default(auth()->user()->id),
                     ]),
@@ -72,9 +65,6 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('models.customers.fields.name'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->label(__('models.customers.fields.type'))
-                    ->badge(),
                 Tables\Columns\TextColumn::make('type_id')
                     ->label(__('models.customers.fields.type'))
                     ->badge(),
@@ -135,10 +125,10 @@ class CustomerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCustomers::route('/'),
+            'index'  => Pages\ListCustomers::route('/'),
             'create' => Pages\CreateCustomer::route('/create'),
-            'view' => Pages\ViewCustomer::route('/{record}'),
-            'edit' => Pages\EditCustomer::route('/{record}/edit'),
+            'view'   => Pages\ViewCustomer::route('/{record}'),
+            'edit'   => Pages\EditCustomer::route('/{record}/edit'),
         ];
     }
 
@@ -194,6 +184,6 @@ class CustomerResource extends Resource
 
     public static function canCreate(): bool
     {
-        return !static::getModel()::isOutOfQuota();
+        return ! static::getModel()::isOutOfQuota();
     }
 }

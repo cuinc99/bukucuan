@@ -2,13 +2,14 @@
 
 namespace App\Filament\Resources\ExpenseResource\Pages;
 
+use App\Models\Type;
 use Filament\Actions;
 use App\Models\Expense;
-use App\Enums\ExpenseTypeEnum;
+use App\Enums\TypeKeyEnum;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
-use App\Filament\Resources\ExpenseResource;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ExpenseResource;
 
 class ListExpenses extends ListRecords
 {
@@ -28,12 +29,12 @@ class ListExpenses extends ListRecords
         $tabs['all'] = Tab::make(trans('models.common.all'))
             ->badge(Expense::count());
 
-        foreach (ExpenseTypeEnum::cases() as $type) {
+        foreach (Type::where('key', TypeKeyEnum::EXPENSE->value)->get() as $type) {
             $tabs[$type->value] = Tab::make($type->value)
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('type', $type->value))
-                ->badge(Expense::where('type', $type->value)->count())
-                ->badgeColor($type->getColor())
-                ->badgeIcon($type->getIcon());
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('type_id', $type->id));
+                // ->badge(Expense::where('type', $type->value)->count())
+                // ->badgeColor($type->getColor())
+                // ->badgeIcon($type->getIcon());
         }
 
         return $tabs;
