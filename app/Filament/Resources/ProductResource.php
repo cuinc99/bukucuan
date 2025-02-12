@@ -2,18 +2,20 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\ProductResource\Pages;
-use App\Models\Product;
 use Filament\Forms;
-use Filament\Forms\Form;
+use App\Models\Type;
+use Filament\Tables;
+use App\Models\Product;
 use Filament\Infolists;
+use Filament\Forms\Form;
+use App\Enums\TypeKeyEnum;
+use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\ActionSize;
-use Filament\Tables;
-use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use App\Filament\Resources\ProductResource\Pages;
 
 class ProductResource extends Resource
 {
@@ -160,10 +162,5 @@ class ProductResource extends Resource
     public static function canAccess(): bool
     {
         return auth()->user()->role->isUser() || auth()->user()->role->isFree();
-    }
-
-    public static function canCreate(): bool
-    {
-        return !static::getModel()::isOutOfQuota();
     }
 }

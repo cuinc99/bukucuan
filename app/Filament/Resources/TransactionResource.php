@@ -591,9 +591,4 @@ class TransactionResource extends Resource
     {
         return auth()->user()->role->isUser() || auth()->user()->role->isFree();
     }
-
-    public static function canCreate(): bool
-    {
-        return ! static::getModel()::isOutOfQuota();
-    }
 }

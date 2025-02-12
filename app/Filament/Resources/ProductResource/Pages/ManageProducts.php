@@ -14,8 +14,7 @@ class ManageProducts extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->disabled(fn (): bool => Product::isOutOfQuota()),
+            Actions\CreateAction::make(),
         ];
     }
 }

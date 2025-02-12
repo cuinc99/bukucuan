@@ -65,19 +65,23 @@ class CustomerResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label(__('models.customers.fields.name'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type_id')
+
+                Tables\Columns\TextColumn::make('type.name')
                     ->label(__('models.customers.fields.type'))
                     ->badge(),
+
                 Tables\Columns\TextColumn::make('total_transaction')
                     ->label(__('models.customers.fields.total_transaction'))
                     ->numeric()
                     ->suffix(' x')
                     ->alignCenter(),
+
                 Tables\Columns\TextColumn::make('total_products_purchased')
                     ->label(__('models.customers.fields.total_products_purchased'))
                     ->numeric()
                     ->suffix(' item')
                     ->alignCenter(),
+
                 Tables\Columns\TextColumn::make('total_buy')
                     ->label(__('models.customers.fields.total_buy'))
                     ->formatStateUsing(fn(string $state): string => __("Rp. " . number_format($state, 0, ',', '.')))
@@ -142,7 +146,7 @@ class CustomerResource extends Resource
                     ->schema([
                         Infolists\Components\TextEntry::make('name')
                             ->label(__('models.customers.fields.name')),
-                        Infolists\Components\TextEntry::make('type')
+                        Infolists\Components\TextEntry::make('type.name')
                             ->label(__('models.customers.fields.type'))
                             ->badge(),
                         Infolists\Components\TextEntry::make('total_transaction')
@@ -180,10 +184,5 @@ class CustomerResource extends Resource
     public static function canAccess(): bool
     {
         return auth()->user()->role->isUser() || auth()->user()->role->isFree();
-    }
-
-    public static function canCreate(): bool
-    {
-        return ! static::getModel()::isOutOfQuota();
     }
 }

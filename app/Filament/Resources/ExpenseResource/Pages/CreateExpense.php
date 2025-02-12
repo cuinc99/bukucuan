@@ -27,8 +27,8 @@ class CreateExpense extends CreateRecord
             $newExpense = Expense::create([
                 'expense_code' => $expenseCode,
                 'purchase_date' => $expenses['purchase_date'],
-                'product' => $expense['product'],
-                'type' => $expense['type'],
+                'item' => $expense['item'],
+                'type_id' => $expense['type_id'],
                 'price' => $expense['price'],
                 'user_id' => $expenses['user_id'],
             ]);

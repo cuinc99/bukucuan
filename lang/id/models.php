@@ -71,7 +71,7 @@ return [
             'expense_code' => 'Kode Pengeluaran',
             'purchase_date' => 'Tanggal Pengeluaran',
             'product' => 'Produk',
-            'type' => 'Tipe',
+            'category' => 'Kategori',
             'price' => 'Harga',
             'subtotal' => 'Subtotal',
         ],

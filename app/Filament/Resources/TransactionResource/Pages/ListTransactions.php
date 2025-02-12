@@ -20,8 +20,7 @@ class ListTransactions extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->disabled(fn (): bool => Transaction::isOutOfQuota()),
+            Actions\CreateAction::make(),
         ];
     }
 

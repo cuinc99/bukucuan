@@ -67,25 +67,22 @@ class ExpenseResource extends Resource
             ->hiddenLabel()
             ->columnSpanFull()
             ->headers([
-                Header::make('product')
-                    ->label(__('models.expenses.fields.product'))
+                Header::make('item')
+                    ->label(__('models.expenses.fields.item'))
                     ->markAsRequired(),
                 Header::make('type')
-                    ->label(__('models.expenses.fields.type'))
-                    ->markAsRequired(),
-                Header::make('type')
-                    ->label(__('models.expenses.fields.type'))
+                    ->label(__('models.expenses.fields.category'))
                     ->markAsRequired(),
                 Header::make('price')
                     ->label(__('models.expenses.fields.price')),
             ])
             ->schema([
-                Forms\Components\TextInput::make('product')
-                    ->label(__('models.expenses.fields.product'))
+                Forms\Components\TextInput::make('item')
+                    ->label(__('models.expenses.fields.item'))
                     ->required(),
 
                 Forms\Components\Select::make('type_id')
-                    ->label(__('models.expenses.fields.type'))
+                    ->label(__('models.expenses.fields.category'))
                     ->options(Type::where('key', TypeKeyEnum::EXPENSE->value)->pluck('name', 'id'))
                     ->required()
                     ->searchable()
@@ -120,11 +117,11 @@ class ExpenseResource extends Resource
                     ->date()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('product')
-                    ->label(__('models.expenses.fields.product'))
+                Tables\Columns\TextColumn::make('item')
+                    ->label(__('models.expenses.fields.item'))
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
+                Tables\Columns\TextColumn::make('type.name')
                     ->label(__('models.customers.fields.type'))
                     ->badge(),
                 Tables\Columns\TextColumn::make('price')

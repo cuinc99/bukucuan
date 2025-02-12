@@ -18,8 +18,7 @@ class ListCustomers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
-                ->disabled(fn (): bool => Customer::isOutOfQuota()),
+            Actions\CreateAction::make(),
         ];
     }
 
@@ -31,11 +30,9 @@ class ListCustomers extends ListRecords
             ->badge(Customer::count());
 
         foreach (Type::where('key', TypeKeyEnum::CUSTOMER->value)->get() as $type) {
-            $tabs[$type->value] = Tab::make($type->name)
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('type_id', $type->id));
-                // ->badge(Customer::where('type', $type->id)->count())
-                // ->badgeColor($type->getColor())
-                // ->badgeIcon($type->getIcon());
+            $tabs[$type?->name] = Tab::make($type?->name)
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('type_id', $type?->id))
+                ->badge(Customer::where('type_id', $type?->id)->count());
         }
 
         return $tabs;

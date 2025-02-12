@@ -30,11 +30,9 @@ class ListExpenses extends ListRecords
             ->badge(Expense::count());
 
         foreach (Type::where('key', TypeKeyEnum::EXPENSE->value)->get() as $type) {
-            $tabs[$type->value] = Tab::make($type->value)
-                ->modifyQueryUsing(fn (Builder $query) => $query->where('type_id', $type->id));
-                // ->badge(Expense::where('type', $type->value)->count())
-                // ->badgeColor($type->getColor())
-                // ->badgeIcon($type->getIcon());
+            $tabs[$type?->name] = Tab::make($type?->name)
+                ->modifyQueryUsing(fn (Builder $query) => $query->where('type_id', $type?->id))
+                ->badge(Expense::where('type_id', $type?->id)->count());
         }
 
         return $tabs;

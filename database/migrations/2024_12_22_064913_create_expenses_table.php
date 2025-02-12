@@ -15,8 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('expense_code')->nullable();
             $table->date('purchase_date');
-            $table->string('product')->nullable();
-            $table->string('type')->nullable();
+            $table->string('item')->nullable();
             $table->decimal('price', 15, 0)->default(0);
             $table->foreignId('type_id')->constrained()->cascadeOnDelete();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
